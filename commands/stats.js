@@ -41,20 +41,42 @@ module.exports = {
 	},
 	do: async (message, client, args, Discord) => {
     let user = await fetchUser(args[0], client) || message.author;
+    if (!user) return message.channel.send(":x: User Not Found!");
+    let member = message.guild.members.cache.get(user.id);
+    if (!member) return message.channel.send(":x: Member Not Found!");
     let stats = client.stats.get(user.id);
     console.log(stats)
     if (!stats) return message.channel.send(`${user.id === message.author.id ? "You don't" : "This user doesn't"} have any voting stats! ${user.id === message.author.id ? "Get voting!" : ""}`)
     if (!stats.total) return message.channel.send("Err... looks like something is wrong with your vote total. Try voting on any bot list site and retry this command.")
     let embed = new Discord.MessageEmbed()
-      .setAuthor(message.member.displayName, message.author.displayAvatarURL({format: "png", dynamic :true}))
-      .setColor(message.member.displayHexColor)
+      .setAuthor(`${member.displayName}'s Voting Stats!`, user.displayAvatarURL({format: "png", dynamic :true}))
+      .setColor(member.displayHexColor)
       .addField("Total Votes", `${stats.total} Votes`);
     Object.keys(stats).forEach(key => {
-      if (key !== "bod" && key !== "total" && key !== "user") {
-        embed.addField(translate[key], `${stats[key][0]} Votes`, true)
+      if (key !== "bod" && key !== "total" && key !== "user" && key !== "votes") {
+        let cooldown = false;
+        let last = stats[key][1][stats[key][1].length-1];
+            switch (key) {
+              case "topgg":
+              case "dboats":
+              case "gbl": {
+                //12h
+                if (last+43200000>Date.now()) cooldown = true;
+                break;
+              }
+              case "botlistspace":
+              case "bfd":
+              case "divine": 
+              case "dbl": {
+                if (last+86400000>Date.now()) cooldown = true;
+                break;
+              }
+            }
+        embed.addField(`${translate[key]} ${cooldown ? "🕑" : ""}`, `${stats[key][0]} Votes`, true)
       }
     })
     embed.addField("Reviewed on Bots on Discord?", stats.bod ? "Yes": "No")
+    embed.addField("Rated on Glenn Bot List?", stats.gblrate ? "Yes": "No")
     message.channel.send(embed)
   }
 };

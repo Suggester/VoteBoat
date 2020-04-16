@@ -1,12 +1,13 @@
 module.exports = {
 	controls: {
 		permission: 10,
-		aliases: ["review"],
+		aliases: ["review", "reviewcheck"],
 		usage: "checkreview",
 		description: "Checks if you've reviewed on Bots on Discord, and if you have applies 3 extra votes!"
 	},
 	do: async (message, client, args, Discord) => {
     const axios = require('axios')
+    if (!client.stats.get(message.author.id)) return message.channel.send(":x: You don't have a database entry yet, go vote and run this command again!")
     if (client.stats.get(message.author.id, "bod")) return message.channel.send(":x: You have already redeemed your votes from submitting a review!")
     axios.get(`https://bots.ondiscord.xyz/bot-api/bots/564426594144354315/review?owner=${message.author.id}`, {headers: {"Authorization": process.env.BOD_AUTH}}).then(resp => {
       if (resp.data.exists) {
