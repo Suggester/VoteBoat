@@ -6,7 +6,7 @@ module.exports = async (Discord, client) => {
     console.log("INTERVAL")
     client.stats.filter(s => s.total).forEach(stat => {
       Object.keys(stat).forEach(key => {
-        if (key !== "bod" && key !== "total" && key !== "user" && key !== "votes") {
+        if (key !== "bod" && key !== "gblrate" && key !== "total" && key !== "user" && key !== "votes") {
           if (!stat[key][2]) {
             let last = stat[key][1][stat[key][1].length-1];
             switch (key) {

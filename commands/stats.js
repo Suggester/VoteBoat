@@ -53,7 +53,7 @@ module.exports = {
       .setColor(member.displayHexColor)
       .addField("Total Votes", `${stats.total} Votes`);
     Object.keys(stats).forEach(key => {
-      if (key !== "bod" && key !== "total" && key !== "user" && key !== "votes") {
+      if (key !== "bod" && key !== "gblrate" && key !== "total" && key !== "user" && key !== "votes") {
         let cooldown = false;
         let last = stats[key][1][stats[key][1].length-1];
             switch (key) {
