@@ -2,7 +2,7 @@ const lists = require("../lists.json");
 module.exports = {
 	controls: {
 		permission: 10,
-		aliases: ["command", "howto"],
+		aliases: ["shop", "store", "purchase"],
 		usage: "help",
 		description: "Shows help information"
 	},
@@ -15,7 +15,7 @@ module.exports = {
       let embed = new Discord.MessageEmbed()
         .setTitle("Voting Rewards!")
         .setDescription("With your votes, you can buy various items like roles and acknowledgements!")
-        .addField("Available Rewards", "`1` **Supporter Role**\n> _A fancy hoisted role that gives you access to the supporter chat_\n> __Cost:__ 50 Votes\n\n`2` **Upper Tier Upvoter Role**\n> _An even fancier hoisted role that gives you access to another secret chat! (must be purchased after Supporter)_\n> __Cost:__ 500 Votes\n\n`3` **Super Supporter Role**\n> _The highest tier of voting - you get another hoisted role & chat, as well as nickname permissions! (must be purchased after Upper Tier Upvoter)_\n> __Cost:__ 1500 Votes\n\n`4` **Beaner Role**\n> _With this role, you can `.bean` anyone in any server that uses Suggester! (must be purchased after Super Supporter)_\n> __Cost:__ 750 Votes\n\n`5` **Custom Acknowledgement**\n> _Get a custom acknowledgement added to your `.verify` command! (must be purchased after Super Supporter)_\n> __Cost:__ 750 Votes")
+        .addField("Available Rewards", "`1` **Supporter Role**\n> _A fancy hoisted role that gives you access to the supporter chat_\n> __Cost:__ 50 Votes\n\n`2` **Upper Tier Upvoter Role**\n> _An even fancier hoisted role that gives you access to another secret chat! (must be purchased after Supporter)_\n> __Cost:__ 500 Votes\n\n`3` **Super Supporter Role**\n> _The highest tier of voting - you get another hoisted role & chat, as well as nickname permissions! (must be purchased after Upper Tier Upvoter)_\n> __Cost:__ 1500 Votes\n\n`4` **Custom Acknowledgement**\n> _Get a custom acknowledgement added to your `.verify` command! (must be purchased after Super Supporter)_\n> __Cost:__ 750 Votes")
         .addField("Buying Rewards", "To purchase a reward, use the **v!buy** command, followed by the number of the item you would like to buy.\n> __Example: Buying the Supporter role__\n> v!buy 1")
         .setColor("#5334eb");
       return message.channel.send(embed)
@@ -34,9 +34,6 @@ module.exports = {
         info = [1500, "Super Supporter role", supersup, upvoter]
         break;
       case "4":
-        info = [750, "Beaner role", beaner, supersup]
-        break;
-      case "5":
         info = [750, "Custom Acknowledgement! Please DM <@624711903930744873> to get it added", "", supersup]
         break;
       default:

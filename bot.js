@@ -61,8 +61,10 @@ function makeDefault (current, id) {
   return obj;
 };
 
-async function handleVote (user, type, valueToAdd, client, timeforstreak) {
+async function handleVote (user, type, valueToAdd, client, timeforday) {
     await client.stats.defer;
+  
+    let timeforstreak = timeforday*5;
 
     client.stats.ensure(user, defaults)
     let stats = client.stats.get(user);
@@ -73,12 +75,12 @@ async function handleVote (user, type, valueToAdd, client, timeforstreak) {
     stats[type][2] = false;
     let last5 = stats[type][1].filter(time => Date.now()-time<=timeforstreak)
     let emotes = ["<:streak1:690376809761734706>", "<:streak2:690377235978256384>", "<:streak3:690377163827970049>", "<:streak4:690377107817103380>", "<:streak5:690377450877747221>"];
-    if (last5.length >= 5 && last5.filter(time => Date.now()-time>timeforstreak && Date.now()-time<timeforstreak*2)) {
-      stats[type][1] = [];
+    if (last5.length >= 5 && last5.filter(time => Date.now()-time>timeforday && Date.now()-time<timeforday*2)) {
+      stats[type][1] = [Date.now()];
       stats[type][0]++;
       client.stats.set(user, stats);
       return `\n> Streak ${emotes[4]} - +1 Extra Vote Applied for Completed Streak! :tada:`;
-    } else if (last5.length > 0 && last5.filter(time => Date.now()-time>timeforstreak && Date.now()-time<timeforstreak*2)) {
+    } else if (last5.length > 0 && last5.filter(time => Date.now()-time>timeforday && Date.now()-time<timeforday*2)) {
       client.stats.set(user, stats);
       return `\n> Streak ${emotes[last5.length-1]}`;
     } else {
@@ -107,7 +109,7 @@ async function fetchUser (id, client) {
 
 app.post('/topgg', async (req, res) => {
   if (!req.headers.authorization || req.headers.authorization !== process.env.TOPGG_PWD) return res.sendStatus(403);
-  let voteResponse = await handleVote(req.body.user, "topgg", req.body.isWeekend ? 2 : 1, client, 216000000);
+  let voteResponse = await handleVote(req.body.user, "topgg", req.body.isWeekend ? 2 : 1, client, 43200000);
   let hook = new Discord.WebhookClient(process.env.WEBHOOK_ID, process.env.WEBHOOK_TOKEN)
   let user = await fetchUser(req.body.user, client);
   if (!user) return res.sendStatus(200);;
@@ -121,7 +123,7 @@ app.post('/topgg', async (req, res) => {
 
 app.post('/botlistspace', async (req, res) => {
   if (!req.headers.authorization || req.headers.authorization !== process.env.BLS_PWD) return res.sendStatus(403);
-  let voteResponse = await handleVote(req.body.user.id, "botlistspace", 1, client, 432000000);
+  let voteResponse = await handleVote(req.body.user.id, "botlistspace", 1, client, 86400000);
   let hook = new Discord.WebhookClient(process.env.WEBHOOK_ID, process.env.WEBHOOK_TOKEN)
   let user = await fetchUser(req.body.user.id, client);
   if (!user) return res.sendStatus(200);
@@ -136,7 +138,7 @@ app.post('/botlistspace', async (req, res) => {
 app.post('/bfd', async (req, res) => {
   console.log("aa")
   if (!req.headers.authorization || req.headers.authorization !== process.env.BFD_PWD) return res.sendStatus(403);
-  let voteResponse = await handleVote(req.body.user, "bfd", 1, client, 432000000);
+  let voteResponse = await handleVote(req.body.user, "bfd", 1, client, 86400000);
   let hook = new Discord.WebhookClient(process.env.WEBHOOK_ID, process.env.WEBHOOK_TOKEN)
   let user = await fetchUser(req.body.user, client);
   if (!user) return res.sendStatus(200);
@@ -150,7 +152,7 @@ app.post('/bfd', async (req, res) => {
 
 app.post('/divine', async (req, res) => {
   if (!req.headers.authorization || req.headers.authorization !== process.env.DIVINE_PWD) return res.sendStatus(403);
-  let voteResponse = await handleVote(req.body.user.id, "divine", 1, client, 432000000);
+  let voteResponse = await handleVote(req.body.user.id, "divine", 1, client, 86400000);
   let hook = new Discord.WebhookClient(process.env.WEBHOOK_ID, process.env.WEBHOOK_TOKEN)
   let user = await fetchUser(req.body.user.id, client);
   if (!user) return res.sendStatus(200);
@@ -164,7 +166,7 @@ app.post('/divine', async (req, res) => {
 
 app.post('/dbl', async (req, res) => {
   if (!req.headers["x-dbl-signature"] || req.headers["x-dbl-signature"].split(" ")[0] !== process.env.DBL_PWD) return res.sendStatus(403); 
-  let voteResponse = await handleVote(req.body.id, "dbl", 1, client, 432000000);
+  let voteResponse = await handleVote(req.body.id, "dbl", 1, client, 86400000);
   let hook = new Discord.WebhookClient(process.env.WEBHOOK_ID, process.env.WEBHOOK_TOKEN)
   let user = await fetchUser(req.body.id, client);
   if (!user) return res.sendStatus(200);
@@ -178,7 +180,7 @@ app.post('/dbl', async (req, res) => {
 
 app.post('/dboats', async (req, res) => {
   if (!req.headers.authorization || req.headers.authorization !== process.env.DBOATS_PWD) return res.sendStatus(403);
-  let voteResponse = await handleVote(req.body.user.id, "dboats", 1, client, 216000000);
+  let voteResponse = await handleVote(req.body.user.id, "dboats", 1, client, 43200000);
   let hook = new Discord.WebhookClient(process.env.WEBHOOK_ID, process.env.WEBHOOK_TOKEN)
   let user = await fetchUser(req.body.user.id, client);
   if (!user) return res.sendStatus(200);
@@ -192,7 +194,8 @@ app.post('/dboats', async (req, res) => {
 
 app.post('/gbl', async (req, res) => {
   if (!req.headers.authorization || req.headers.authorization !== process.env.GBL_PWD) return res.sendStatus(403);
-  let voteResponse = await handleVote(req.body.id, "gbl", 1, client, 216000000);
+  console.log("GBL " + req.body.id);
+  let voteResponse = await handleVote(req.body.id, "gbl", 1, client, 43200000);
   let hook = new Discord.WebhookClient(process.env.WEBHOOK_ID, process.env.WEBHOOK_TOKEN)
   let user = await fetchUser(req.body.id, client);
   if (!user) return res.sendStatus(200);

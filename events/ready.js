@@ -6,7 +6,7 @@ module.exports = async (Discord, client) => {
     console.log("INTERVAL")
     client.stats.filter(s => s.total).forEach(stat => {
       Object.keys(stat).forEach(key => {
-        if (key !== "bod" && key !== "total" && key !== "user") {
+        if (key !== "bod" && key !== "total" && key !== "user" && key !== "votes") {
           if (!stat[key][2]) {
             let last = stat[key][1][stat[key][1].length-1];
             switch (key) {
@@ -14,7 +14,7 @@ module.exports = async (Discord, client) => {
               case "dboats":
               case "gbl": {
                 //12h
-                if (last+216000000<Date.now()) {
+                if (last+43200000<Date.now()) {
                   if (stat.user && client.users.cache.get(stat.user)) {
                     client.users.cache.get(stat.user).send(`Keep your streak alive! It's time to vote for Suggester again at ${lists[key]}`).catch(() => {})
                   }
@@ -24,8 +24,9 @@ module.exports = async (Discord, client) => {
               }
               case "botlistspace":
               case "bfd":
-              case "divine": {
-                if (last+432000000<Date.now()) {
+              case "divine": 
+              case "dbl": {
+                if (last+86400000<Date.now()) {
                   if (stat.user && client.users.cache.get(stat.user)) {
                     client.users.cache.get(stat.user).send(`Keep your streak alive! It's time to vote for Suggester again at ${lists[key]}`).catch(() => {})
                   }
