@@ -43,7 +43,6 @@ const defaults = {
     bfd: [0, [], false],
     dbl: [0, [], false],
     dboats: [0, [], false],
-    divine: [0, [], false],
     gbl: [0, [], false],
     bod: false
 };
@@ -57,13 +56,13 @@ function makeDefault (current, id) {
     obj.total = current.votes;
     obj.user = id;
   }
-  
+
   return obj;
 };
 
 async function handleVote (user, type, valueToAdd, client, timeforday) {
     await client.stats.defer;
-  
+
     let timeforstreak = timeforday*5;
 
     client.stats.ensure(user, defaults)
@@ -150,22 +149,8 @@ app.post('/bfd', async (req, res) => {
   return res.sendStatus(200);
 });
 
-app.post('/divine', async (req, res) => {
-  if (!req.headers.authorization || req.headers.authorization !== process.env.DIVINE_PWD) return res.sendStatus(403);
-  let voteResponse = await handleVote(req.body.user.id, "divine", 1, client, 86400000);
-  let hook = new Discord.WebhookClient(process.env.WEBHOOK_ID, process.env.WEBHOOK_TOKEN)
-  let user = await fetchUser(req.body.user.id, client);
-  if (!user) return res.sendStatus(200);
-  let embed = new Discord.MessageEmbed()
-    .setDescription(`${user.tag} (\`${user.id}\`) voted for Suggester on [Divine Discord Bot List](https://divinediscordbots.com/bot/564426594144354315/vote)!\n> +1 Vote${voteResponse ? voteResponse : ""}`)
-    .setFooter("Thanks for voting!")
-    .setColor("#4663ec");
-  hook.send({embeds: [embed], avatarURL: "https://cdn.glitch.com/e10a63e8-6b5d-4d37-a694-5dfd1332828c%2F356f5af1a139c8d6dd9348254ac8854a.png?v=1584715857876"});
-  return res.sendStatus(200);
-});
-
 app.post('/dbl', async (req, res) => {
-  if (!req.headers["x-dbl-signature"] || req.headers["x-dbl-signature"].split(" ")[0] !== process.env.DBL_PWD) return res.sendStatus(403); 
+  if (!req.headers["x-dbl-signature"] || req.headers["x-dbl-signature"].split(" ")[0] !== process.env.DBL_PWD) return res.sendStatus(403);
   let voteResponse = await handleVote(req.body.id, "dbl", 1, client, 86400000);
   let hook = new Discord.WebhookClient(process.env.WEBHOOK_ID, process.env.WEBHOOK_TOKEN)
   let user = await fetchUser(req.body.id, client);

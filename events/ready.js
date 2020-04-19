@@ -1,7 +1,7 @@
 module.exports = async (Discord, client) => {
   const lists = require("../lists.json")
 	console.log(`Logged in as ${client.user.tag}!`);
-  
+
   setInterval(function() {
     console.log("INTERVAL")
     client.stats.filter(s => s.total).forEach(stat => {
@@ -24,7 +24,6 @@ module.exports = async (Discord, client) => {
               }
               case "botlistspace":
               case "bfd":
-              case "divine": 
               case "dbl": {
                 if (last+86400000<Date.now()) {
                   if (stat.user && client.users.cache.get(stat.user)) {
