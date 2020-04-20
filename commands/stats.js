@@ -28,7 +28,6 @@ const translate = {
   "botlistspace": "botlist.space",
   "bfd": "Bots for Discord",
   "dboats": "Discord Boats",
-  "divine": "Divine Discord Bot List",
   "gbl": "Glenn Bot List"
 }
 
@@ -53,7 +52,7 @@ module.exports = {
       .setColor(member.displayHexColor)
       .addField("Total Votes", `${stats.total} Votes`);
     Object.keys(stats).forEach(key => {
-      if (key !== "bod" && key !== "gblrate" && key !== "total" && key !== "user" && key !== "votes") {
+      if (key !== "bod" && key !== "gblrate" && key !== "total" && key !== "user" && key !== "votes" && key !== "divine") {
         let cooldown = false;
         let last = stats[key][1][stats[key][1].length-1];
             switch (key) {

@@ -43,7 +43,6 @@ const defaults = {
     bfd: [0, [], false],
     dbl: [0, [], false],
     dboats: [0, [], false],
-    divine: [0, [], false],
     gbl: [0, [], false],
     bod: false
 };
@@ -147,20 +146,6 @@ app.post('/bfd', async (req, res) => {
     .setFooter("Thanks for voting!")
     .setColor("#4663ec");
   hook.send({embeds: [embed], avatarURL: "https://cdn.glitch.com/e10a63e8-6b5d-4d37-a694-5dfd1332828c%2Fe1e1eb9ed8c0c3c67dd62e282bc5a704.png?v=1584714973147"});
-  return res.sendStatus(200);
-});
-
-app.post('/divine', async (req, res) => {
-  if (!req.headers.authorization || req.headers.authorization !== process.env.DIVINE_PWD) return res.sendStatus(403);
-  let voteResponse = await handleVote(req.body.user.id, "divine", 1, client, 86400000);
-  let hook = new Discord.WebhookClient(process.env.WEBHOOK_ID, process.env.WEBHOOK_TOKEN)
-  let user = await fetchUser(req.body.user.id, client);
-  if (!user) return res.sendStatus(200);
-  let embed = new Discord.MessageEmbed()
-    .setDescription(`${user.tag} (\`${user.id}\`) voted for Suggester on [Divine Discord Bot List](https://divinediscordbots.com/bot/564426594144354315/vote)!\n> +1 Vote${voteResponse ? voteResponse : ""}`)
-    .setFooter("Thanks for voting!")
-    .setColor("#4663ec");
-  hook.send({embeds: [embed], avatarURL: "https://cdn.glitch.com/e10a63e8-6b5d-4d37-a694-5dfd1332828c%2F356f5af1a139c8d6dd9348254ac8854a.png?v=1584715857876"});
   return res.sendStatus(200);
 });
 
