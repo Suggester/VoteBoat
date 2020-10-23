@@ -78,7 +78,7 @@ async function handleVote (user, type, valueToAdd, client, timeforday) {
       stats[type][1] = [Date.now()];
       stats[type][0]++;
       client.stats.set(user, stats);
-      return `\n> Streak ${emotes[4]} - +1 Extra Vote Applied for Completed Streak! :tada:`;
+      return `\n> Streak ${emotes[4]} | +1 Extra Vote Applied for Completed Streak! :tada:`;
     } else if (last5.length > 0 && last5.filter(time => Date.now()-time>timeforday && Date.now()-time<timeforday*2)) {
       client.stats.set(user, stats);
       return `\n> Streak ${emotes[last5.length-1]}`;
