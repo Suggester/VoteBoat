@@ -1,12 +1,14 @@
+/* eslint no-unreachable: 0 */
+
 require('dotenv/config')
 
 const fs = require('fs')
 const express = require('express')
-const bodyParser = require('body-parser')
 const Discord = require('discord.js')
+const bodyParser = require('body-parser')
 const Enmap = require('enmap')
 
-// --- init stuff ---
+// --- init stuff
 
 const app = express()
 const router = express.Router()
@@ -16,11 +18,17 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(process.env.PREFIX, router)
 
 app.listen(process.env.PORT, () => {
-  console.log('Listening on port', process.env.PORT)
+  console.log('Listening on port:', process.env.PORT)
 })
 
 const client = new Discord.Client({
-  presence: { activity: { name: 'people vote for Suggester! - v!help', type: 'WATCHING' }, status: 'online' }
+  presence: {
+    activity: {
+      name: 'people vote for Suggester! - v!help',
+      type: 'WATCHING'
+    },
+    status: 'online'
+  }
 })
 
 if (!client.stats) {
@@ -38,6 +46,7 @@ const defaults = {
   dbl: [0, [], false],
   dboats: [0, [], false],
   gbl: [0, [], false],
+  arcane: [0, [], false],
   bod: false
 }
 
@@ -98,7 +107,7 @@ async function fetchUser (id, client) {
     null
 }
 
-// --- Routes ---
+// --- routes ---
 
 router.get('/', (request, response) => {
   response.sendStatus(200)
@@ -194,14 +203,44 @@ router.post('/gbl', async (req, res) => {
   return res.sendStatus(200)
 })
 
-// --- discrd.js stuff ---
+router.post('/arcane', async (req, res) => {
+  if (!req.headers.authorization || req.headers.authorization !== process.env.ARCANE_PWD) return res.sendStatus(403)
+  const voteResponse = await handleVote(req.body.user.id, 'arcane', 1, client, 43200000)
+  const hook = new Discord.WebhookClient(process.env.WEBHOOK_ID, process.env.WEBHOOK_TOKEN)
+  const user = await fetchUser(req.body.user.id, client)
+  if (!user) return res.sendStatus(200)
+  const embed = new Discord.MessageEmbed()
+    .setDescription(`${user.tag} (\`${user.id}\`) voted for Suggester on [Arcane Center](https://arcane-center.xyz/bot/564426594144354315)!\n> +1 Vote${voteResponse || ''}`)
+    .setFooter('Thanks for voting!')
+    .setColor('#4663ec')
+  hook.send({ embeds: [embed], avatarURL: 'https://cdn.glitch.com/e10a63e8-6b5d-4d37-a694-5dfd1332828c%2F48ff7211df98c58c2f16b73a758a9be7.png?v=1591277063736' })
+  return res.sendStatus(200)
+})
+
+router.post('/spacebl', async (req, res) => {
+  console.log(req.headers, req.body)
+  return
+  if (!req.headers.authorization || req.headers.authorization !== process.env.ARCANE_PWD) return res.sendStatus(403)
+  const voteResponse = await handleVote(req.body.user.id, 'arcane', 1, client, 43200000)
+  const hook = new Discord.WebhookClient(process.env.WEBHOOK_ID, process.env.WEBHOOK_TOKEN)
+  const user = await fetchUser(req.body.user.id, client)
+  if (!user) return res.sendStatus(200)
+  const embed = new Discord.MessageEmbed()
+    .setDescription(`${user.tag} (\`${user.id}\`) voted for Suggester on [Arcane Center](https://arcane-center.xyz/bot/564426594144354315)!\n> +1 Vote${voteResponse || ''}`)
+    .setFooter('Thanks for voting!')
+    .setColor('#4663ec')
+  hook.send({ embeds: [embed], avatarURL: 'https://cdn.glitch.com/e10a63e8-6b5d-4d37-a694-5dfd1332828c%2F48ff7211df98c58c2f16b73a758a9be7.png?v=1591277063736' })
+  return res.sendStatus(200)
+})
+
+// --- discord.js stuff ---
 
 client.login(process.env.TOKEN)
   .catch(console.error)
 
-fs.readdir('./events/', (e, files) => {
-  if (e) {
-    console.log(e)
+fs.readdir('./events/', (err, files) => {
+  if (err) {
+    console.error(err)
   }
 
   files.forEach(file => {
@@ -211,8 +250,8 @@ fs.readdir('./events/', (e, files) => {
     client.on(eventName, (...args) => {
       try {
         eventHandler(Discord, client, ...args)
-      } catch (err) {
-        console.log(err)
+      } catch (e) {
+        console.log(e)
       }
     })
   })

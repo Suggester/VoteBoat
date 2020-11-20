@@ -28,7 +28,8 @@ const translate = {
   botlistspace: 'botlist.space',
   bfd: 'Bots for Discord',
   dboats: 'Discord Boats',
-  gbl: 'Glenn Bot List'
+  gbl: 'Glenn Bot List',
+  arcane: 'Arcane Center'
 }
 
 module.exports = {
@@ -58,6 +59,7 @@ module.exports = {
         switch (key) {
           case 'topgg':
           case 'dboats':
+          case 'arcane':
           case 'gbl': {
             // 12h
             if (last + 43200000 > Date.now()) cooldown = true
