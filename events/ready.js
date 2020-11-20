@@ -3,7 +3,7 @@ module.exports = async (Discord, client) => {
   console.log(`Logged in as ${client.user.tag}!`)
 
   setInterval(function () {
-    console.log('INTERVAL')
+    // console.log('INTERVAL')
     client.stats.filter(s => s.total).forEach(stat => {
       Object.keys(stat).forEach(key => {
         if (key !== 'bod' && key !== 'gblrate' && key !== 'total' && key !== 'user' && key !== 'votes' && key !== 'divine') {

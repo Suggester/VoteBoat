@@ -189,6 +189,7 @@ router.post('/dboats', async (req, res) => {
 })
 
 router.post('/gbl', async (req, res) => {
+  return
   if (!req.headers.authorization || req.headers.authorization !== process.env.GBL_PWD) return res.sendStatus(403)
   console.log('GBL ' + req.body.id)
   const voteResponse = await handleVote(req.body.id, 'gbl', 1, client, 43200000)
