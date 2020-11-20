@@ -146,7 +146,6 @@ router.post('/botlistspace', async (req, res) => {
 })
 
 router.post('/bfd', async (req, res) => {
-  console.log('aa')
   if (!req.headers.authorization || req.headers.authorization !== process.env.BFD_PWD) return res.sendStatus(403)
   const voteResponse = await handleVote(req.body.user, 'bfd', 1, client, 86400000)
   const hook = new Discord.WebhookClient(process.env.WEBHOOK_ID, process.env.WEBHOOK_TOKEN)
@@ -191,7 +190,6 @@ router.post('/dboats', async (req, res) => {
 router.post('/gbl', async (req, res) => {
   return
   if (!req.headers.authorization || req.headers.authorization !== process.env.GBL_PWD) return res.sendStatus(403)
-  console.log('GBL ' + req.body.id)
   const voteResponse = await handleVote(req.body.id, 'gbl', 1, client, 43200000)
   const hook = new Discord.WebhookClient(process.env.WEBHOOK_ID, process.env.WEBHOOK_TOKEN)
   const user = await fetchUser(req.body.id, client)
@@ -219,7 +217,6 @@ router.post('/arcane', async (req, res) => {
 })
 
 router.post('/spacebl', async (req, res) => {
-  console.log(req.headers, req.body)
   return
   if (!req.headers.authorization || req.headers.authorization !== process.env.ARCANE_PWD) return res.sendStatus(403)
   const voteResponse = await handleVote(req.body.user.id, 'arcane', 1, client, 43200000)

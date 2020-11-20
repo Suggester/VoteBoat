@@ -45,7 +45,6 @@ module.exports = {
     const member = message.guild.members.cache.get(user.id)
     if (!member) return message.channel.send(':x: Member Not Found!')
     const stats = client.stats.get(user.id)
-    console.log(stats)
     if (!stats) return message.channel.send(`${user.id === message.author.id ? "You don't" : "This user doesn't"} have any voting stats! ${user.id === message.author.id ? 'Get voting!' : ''}`)
     if (!stats.total) return message.channel.send('Err... looks like something is wrong with your vote total. Try voting on any bot list site and retry this command.')
     const embed = new Discord.MessageEmbed()
