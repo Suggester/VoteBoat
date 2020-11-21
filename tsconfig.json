@@ -1,0 +1,21 @@
+{
+  "extends": "./node_modules/gts/tsconfig-google.json",
+  "compilerOptions": {
+    "target": "ES6",
+    "sourceMap": false,
+    "declaration": false,
+    "rootDir": ".",
+    "baseUrl": ".",
+    "outDir": "build",
+    "esModuleInterop": true,
+    "typeRoots": ["src/types"],
+    "paths": {
+      "@types": ["src/types/index.d.ts"],
+      "@client": ["src/util/client.ts"]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts"
+  ]
+}

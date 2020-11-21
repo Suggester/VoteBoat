@@ -1,0 +1,38 @@
+{
+  "name": "voteboat",
+  "version": "1.0.0",
+  "main": "build/src/index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^4.17.9",
+    "@types/module-alias": "^2.0.0",
+    "@types/node": "^14.14.9",
+    "@types/ws": "^7.4.0",
+    "gts": "^3.0.2",
+    "typescript": "^4.1.2"
+  },
+  "scripts": {
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "prepare": "yarn run compile",
+    "pretest": "yarn run compile",
+    "posttest": "yarn run lint",
+    "prestart": "yarn run compile",
+    "start": "node ."
+  },
+  "dependencies": {
+    "discord.js": "discordjs/discord.js",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "module-alias": "^2.2.2",
+    "mongoose": "^5.10.15"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "_moduleAliases": {
+    "@client": "build/src/util/client.js"
+  }
+}
