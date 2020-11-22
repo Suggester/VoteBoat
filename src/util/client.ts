@@ -18,11 +18,11 @@ export class VoteBoatClient extends Client {
     super(ops);
   }
 
-  async init() {
+  async init(): Promise<string> {
     this.loadEvents().catch(console.error);
     this.loadCmds().catch(console.error);
 
-    super.login(this.ops.token);
+    return super.login(this.ops.token);
   }
 
   private async loadEvents(): Promise<void> {

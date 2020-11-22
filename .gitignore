@@ -1,5 +1,8 @@
 node_modules/
+build/
 .env
 .env.staging
 .env.dev
-build/
+config.yml
+config.dev.yml
+config.staging.yml

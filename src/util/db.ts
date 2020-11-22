@@ -1,0 +1,70 @@
+import {model, Schema, connect, set as mongooseSet} from 'mongoose';
+import {UserDoc, BotLists} from '@types';
+
+mongooseSet('useCreateIndex', true); // get rid of that annoying deprecation warning
+
+const dbUser = new Schema({
+  id: {type: String, required: true, unique: true},
+  lists: {
+    topgg: {
+      total: {type: Number, default: 0},
+      votes: {type: [Number], default: []},
+    },
+    botlistspace: {
+      total: {type: Number, default: 0},
+      votes: {type: [Number], default: []},
+    },
+    bfd: {
+      total: {type: Number, default: 0},
+      votes: {type: [Number], default: []},
+    },
+    dbl: {
+      total: {type: Number, default: 0},
+      votes: {type: [Number], default: []},
+    },
+    dboats: {
+      total: {type: Number, default: 0},
+      votes: {type: [Number], default: []},
+    },
+    arcane: {
+      total: {type: Number, default: 0},
+      votes: {type: [Number], default: []},
+    },
+    legacy: {
+      total: {type: Number, default: 0},
+      votes: {type: [Number], default: []},
+    },
+    bod: {
+      total: {type: Number, default: 0},
+      votes: {type: [Number], default: []},
+    },
+  },
+});
+
+dbUser.methods.addVote = function (list: BotLists, points: number) {
+  this.lists[list].votes.push(Date.now());
+  this.lists[list].total += points;
+
+  this.save();
+
+  return this;
+};
+
+dbUser.methods.total = function (): number {
+  const lists: UserDoc['lists'] = this.lists;
+  const vals = Object.values(lists);
+  const total = vals
+    .filter(e => typeof e === 'object')
+    .reduce((t, c) => t + c.total, 0);
+
+  return total;
+};
+
+export const User = model('user', dbUser);
+
+export async function initDb() {
+  connect(global.config.mongo_db_uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+}
