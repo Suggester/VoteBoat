@@ -13,6 +13,14 @@ export class Embed extends MessageEmbed {
     super();
   }
 
+  static from(client: Client, embed: MessageEmbed): Embed {
+    const e = new Embed(client);
+
+    Object.assign(embed, e);
+
+    return e;
+  }
+
   async send(
     channel: ChannelResolvable,
     options: MessageOptions = {}

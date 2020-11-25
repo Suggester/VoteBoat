@@ -7,7 +7,8 @@ export default class MessageEvent {
     if (
       msg.author.bot ||
       !msg.content.startsWith(global.config.prefix) ||
-      msg.channel.type !== 'text'
+      msg.channel.type !== 'text' ||
+      global.config?.whitelisted_guilds.includes(msg.guild?.id || '')
     ) {
       return;
     }

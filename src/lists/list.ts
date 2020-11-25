@@ -1,7 +1,7 @@
 import {Request, Response, Router} from 'express';
 import {Client, UserResolvable} from 'discord.js';
 import {Embed} from '../util/structures/embed';
-import {ListOptions, UserDocInstance, BotLists} from '@types';
+import {ListOptions, UserDoc, BotLists} from '@types';
 import {User} from '../util/db';
 
 export abstract class List {
@@ -50,6 +50,8 @@ export abstract class List {
   async saveVote(id: string, amt = 1) {
     // add vote to user db
     console.log('Adding', amt, 'to user', id, 'for list', this.id);
-    ((await User.findOne({id})) as UserDocInstance).addVote(this.id, amt);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ((await (User as any).getOrCreate(id)) as UserDoc).addVote(this.id, amt); // ree tsc
   }
 }

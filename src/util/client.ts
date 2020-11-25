@@ -1,4 +1,6 @@
 import './structures/message';
+import './structures/user';
+import {startServer} from './server';
 
 import {
   Client,
@@ -21,6 +23,7 @@ export class VoteBoatClient extends Client {
   async init(): Promise<string> {
     this.loadEvents().catch(console.error);
     this.loadCmds().catch(console.error);
+    startServer(this);
 
     return super.login(this.ops.token);
   }

@@ -12,11 +12,11 @@ export default class extends Cmd {
     super();
   }
 
-  async run(client: Client, msg: Message): Promise<void> {
+  async run(_client: Client, msg: Message): Promise<void> {
     const found: UserDocInstance | null = (await User.findOne({
       id: msg.author.id,
     })) as UserDocInstance | null;
-    const total = found?.total();
+    const total = found?.lifetimeTotal();
 
     msg.channel.send(`Total: ${total}`);
     msg.channel.send(inspect(found), {code: 'js'});

@@ -5,6 +5,7 @@ mongooseSet('useCreateIndex', true); // get rid of that annoying deprecation war
 
 const dbUser = new Schema({
   id: {type: String, required: true, unique: true},
+  points: {type: Number, default: 0},
   lists: {
     topgg: {
       total: {type: Number, default: 0},
@@ -41,16 +42,17 @@ const dbUser = new Schema({
   },
 });
 
-dbUser.methods.addVote = function (list: BotLists, points: number) {
+dbUser.methods.addVote = function (list: BotLists, points = 1) {
   this.lists[list].votes.push(Date.now());
   this.lists[list].total += points;
+  this.points += points;
 
   this.save();
 
   return this;
 };
 
-dbUser.methods.total = function (): number {
+dbUser.methods.lifetimeTotal = function (): number {
   const lists: UserDoc['lists'] = this.lists;
   const vals = Object.values(lists);
   const total = vals
@@ -58,6 +60,16 @@ dbUser.methods.total = function (): number {
     .reduce((t, c) => t + c.total, 0);
 
   return total;
+};
+
+dbUser.statics.getOrCreate = async function (id: string) {
+  const found = await User.findOne({id});
+
+  if (found) {
+    return found;
+  }
+
+  return new User({id}).save();
 };
 
 export const User = model('user', dbUser);

@@ -34,6 +34,10 @@ declare module 'discord.js' {
     args?: string[];
   }
 
+  export interface User {
+    db(): Promise<UserDoc>;
+  }
+
   export interface VoteBoatEvent {
     name: string;
     skip?: boolean;
@@ -68,18 +72,19 @@ export interface ListOptions {
   method?: 'get' | 'put' | 'post' | 'patch' | 'delete';
 }
 
-export type BotLists =
-  | 'topgg'
-  | 'botlistspace'
-  | 'bfd'
-  | 'dbl'
-  | 'dboats'
-  | 'arcane'
-  | 'bod';
+// export type BotLists =
+//   | 'topgg'
+//   | 'botlistspace'
+//   | 'bfd'
+//   | 'dbl'
+//   | 'dboats'
+//   | 'arcane'
+//   | 'bod';
 
 export interface BotConfig {
   token: string;
   mongo_db_uri: string;
+  whitelisted_guilds: string[];
   admins: string[];
   prefix: string;
   port: number;
@@ -112,17 +117,33 @@ export interface BotConfig {
   };
 }
 
-export interface UserDoc {
+export type BotLists =
+  | 'topgg'
+  | 'botlistspace'
+  | 'bfd'
+  | 'dbl'
+  | 'dboats'
+  | 'arcane'
+  | 'bod'
+  | 'legacy';
+
+export type ValueOf<T> = T[keyof T];
+
+export interface UserDoc extends Document {
   _id: string;
+  id: string;
+  points: number;
   lists: {
     [key in BotLists]: {
       total: number;
       votes: number[];
     };
   };
+  addVote(list: BotLists, points: number): UserDoc;
+  lifetimeTotal(): number;
 }
 
 export interface UserDocInstance extends Document {
   addVote(list: BotLists, points: number): UserDocInstance;
-  total(): number;
+  lifetimeTotal(): number;
 }

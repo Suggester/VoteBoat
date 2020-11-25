@@ -6,3 +6,4 @@ build/
 config.yml
 config.dev.yml
 config.staging.yml
+session.vim
