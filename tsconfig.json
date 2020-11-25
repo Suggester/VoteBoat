@@ -11,7 +11,7 @@
     "typeRoots": ["src/types"],
     "paths": {
       "@types": ["src/types/index.d.ts"],
-      "@client": ["src/util/client.ts"]
+      "@client": ["src/util/structures/client.ts"]
     }
   },
   "include": [

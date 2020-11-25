@@ -1,6 +1,6 @@
-import './structures/message';
-import './structures/user';
-import {startServer} from './server';
+import './message';
+import './user';
+import {startServer} from '../server';
 
 import {
   Client,
@@ -10,7 +10,7 @@ import {
   VoteBoatCmd,
 } from 'discord.js';
 import {Constructable} from '@types';
-import {fileloader} from './util';
+import {fileloader} from '../util';
 
 export class VoteBoatClient extends Client {
   events: Collection<string, VoteBoatEvent> = new Collection();

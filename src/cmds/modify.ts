@@ -46,7 +46,7 @@ export default class extends Cmd {
     const botList: BotLists = list as BotLists;
 
     const num = msg.args.shift()!;
-    const operationRegex = /^(?<op>[+-=]?)(?<amt>\d+)$/g;
+    const operationRegex = /^(?<op>[+-=])(?<amt>\d+)$/g;
     const execd = operationRegex.exec(num);
 
     if (!execd || !execd.groups?.amt) {
@@ -85,8 +85,7 @@ export default class extends Cmd {
         break;
       }
 
-      case '=':
-      case '': {
+      case '=': {
         db.points = amt;
 
         if (list !== 'global') {
@@ -108,8 +107,12 @@ export default class extends Cmd {
       `:white_check_mark: Updated \`${Util.escapeMarkdown(
         user.tag
       )}\`'s votes for list: \`${list}\`\n> Before: \`${
-        dbCopy.lists[list as BotLists].total
-      }\`\n> After: \`${saved.toObject().lists[list].total}\``
+        list === 'global' ? dbCopy.points : dbCopy.lists[botList].total
+      }\`\n> After: \`${
+        list === 'global'
+          ? saved.toObject().points
+          : saved.toObject().lists[list].total
+      }\``
     );
   }
 }
