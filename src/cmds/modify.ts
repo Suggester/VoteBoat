@@ -6,7 +6,7 @@ import {UserDoc, BotLists} from '@types';
 export default class extends Cmd {
   name = 'modify';
   aliases = ['mod', 'edit'];
-  perms = 10;
+  perms = 5;
 
   help = {
     desc: "Modify a user's stats",
@@ -74,10 +74,14 @@ export default class extends Cmd {
       }
 
       case '-': {
-        db.points -= amt;
+        db.points = db.points - amt <= 0 ? 0 : (db.points -= amt);
 
         if (list !== 'global') {
-          db.lists[botList].total -= amt;
+          db.lists[botList].total =
+            db.lists[botList].total - amt <= 0
+              ? 0
+              : db.lists[botList].total - amt;
+
           for (let i = 0; i < amt; i++) {
             db.lists[botList].votes.pop();
           }

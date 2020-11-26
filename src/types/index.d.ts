@@ -83,9 +83,11 @@ export interface ListOptions {
 
 export interface BotConfig {
   token: string;
+  bot_id: string;
   mongo_db_uri: string;
   whitelisted_guilds: string[];
   admins: string[];
+  staff_roles: string[];
   prefix: string;
   port: number;
   root: string;
@@ -133,6 +135,7 @@ export interface UserDoc extends Document {
   _id: string;
   id: string;
   points: number;
+  notify: boolean;
   lists: {
     [key in BotLists]: {
       total: number;

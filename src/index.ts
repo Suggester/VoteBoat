@@ -10,11 +10,8 @@ new VoteBoatClient({
   },
 }).init();
 
-// TODO: process.env => global.config
 // TODO: timers
+// TODO: streaks
 // TODO: commands
 //   TODO: stats
-//   TODO: notify
 //   TODO: help
-//   TODO: modify
-// TODO: cache stuff to reduce database calls?

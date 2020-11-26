@@ -19,9 +19,7 @@ export abstract class List {
     }
   }
 
-  handleRequest(_req: Request, res: Response) {
-    res.status(200).send();
-  }
+  abstract handleRequest(arg0: Request, arg1: Response): void | Promise<void>;
 
   checkOrigin(key: string, req: Request, res?: Response) {
     const areEqual = req.headers?.authorization === key;

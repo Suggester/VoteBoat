@@ -6,6 +6,7 @@ mongooseSet('useCreateIndex', true); // get rid of that annoying deprecation war
 const dbUser = new Schema({
   id: {type: String, required: true, unique: true},
   points: {type: Number, default: 0},
+  notify: {type: Boolean, default: true},
   lists: {
     topgg: {
       total: {type: Number, default: 0},

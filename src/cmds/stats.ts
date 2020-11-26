@@ -24,12 +24,14 @@ export default class extends Cmd {
       }
     }
 
-    const botId = client.user?.id;
+    // const botId = client.user?.id;
+    const botId = global.config.bot_id;
 
     const listInfo: Collection<
       BotLists,
       {name: string; url: string}
     > = new Collection([
+      // https://top.gg/bot/559426966151757824
       ['topgg', {name: 'top.gg', url: `https://top.gg/bot/${botId}`}],
       [
         'botlistspace',
@@ -70,7 +72,10 @@ export default class extends Cmd {
           name: 'Votes',
           value: `<:suggestercircle:739927564646088765> Lifetime Votes: \`${found.lifetimeTotal()}\`\n📥  Current Votes: \`${
             found.points
-          }\` \n\n<:streak3:690377163827970049> Streak: \`2/5\``,
+          }\` \n\n:calendar: Streak: soon:tm:`,
+          // value: `<:suggestercircle:739927564646088765> Lifetime Votes: \`${found.lifetimeTotal()}\`\n📥  Current Votes: \`${
+          //   found.points
+          // }\` \n\n<:streak3:690377163827970049> Streak: \`2/5\``,
         },
         {
           name: 'Lists',
@@ -85,11 +90,5 @@ export default class extends Cmd {
       .setFooter(`Use ${global.config.prefix}shop to spend your votes!`)
       .setTimestamp()
       .send(msg.channel.id);
-
-    // msg.channel.send(
-    //   `Lifetime Total: ${total}\nCurrent Total: ${found?.points}\nLists:\n${mapped}`
-    // );
-
-    // msg.channel.send(inspect(found), {code: 'js'});
   }
 }
