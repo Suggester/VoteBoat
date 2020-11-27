@@ -3,6 +3,10 @@ import {Client, Message} from 'discord.js';
 import {Embed} from '../util/structures/embed';
 import {inspect} from 'util';
 
+// bring some useful stuff into scope
+// so they can be used with eval without require
+import {User} from '../util/db';
+
 export default class extends Cmd {
   name = 'eval';
   perms = 10;
@@ -24,10 +28,9 @@ export default class extends Cmd {
   }
 
   async run(_client: Client, msg: Message): Promise<void> {
-    // bring some useful stuff into scope
-    const {User} = await import('../util/db');
+    // const {User} = await import('../util/db');
 
-    [User]; // this is to get rid of eslint errors lol
+    [User, Embed]; // this is to get rid of eslint errors lol
 
     const code = msg.args?.join(' ');
 

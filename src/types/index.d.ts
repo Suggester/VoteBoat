@@ -140,6 +140,7 @@ export interface UserDoc extends Document {
     [key in BotLists]: {
       total: number;
       votes: number[];
+      sentReminder: boolean;
     };
   };
   addVote(list: BotLists, points: number): UserDoc;

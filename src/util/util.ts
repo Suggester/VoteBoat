@@ -1,7 +1,7 @@
-import {User} from 'discord.js';
-import {Message} from 'discord.js';
+import {User, Message, Collection} from 'discord.js';
 import {promises, PathLike} from 'fs';
 import {resolve} from 'path';
+import {BotLists} from '@types';
 
 export async function* fileloader(
   dir: string
@@ -33,3 +33,18 @@ export async function getUser(
 
   return users.cache.get(id) || users.fetch(id);
 }
+
+const botId = global.config.bot_id;
+
+export const listInfo: Collection<
+  BotLists,
+  {name: string; url: string}
+> = new Collection([
+  ['topgg', {name: 'top.gg', url: `https://top.gg/bot/${botId}`}],
+  ['botlistspace', {name: 'botlist.space', url: `https://top.gg/bot/${botId}`}],
+  ['bfd', {name: 'Bots For Discord', url: `https://top.gg/bot/${botId}`}],
+  ['dbl', {name: 'Discord Bot List', url: `https://top.gg/bot/${botId}`}],
+  ['dboats', {name: 'DBoats', url: `https://top.gg/bot/${botId}`}],
+  ['arcane', {name: 'Arcane Center', url: `https://top.gg/bot/${botId}`}],
+  ['legacy', {name: 'Legacy', url: ''}],
+]);

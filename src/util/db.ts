@@ -11,42 +11,58 @@ const dbUser = new Schema({
     topgg: {
       total: {type: Number, default: 0},
       votes: {type: [Number], default: []},
+      sentReminder: {type: Boolean, default: false},
     },
     botlistspace: {
       total: {type: Number, default: 0},
       votes: {type: [Number], default: []},
+      sentReminder: {type: Boolean, default: false},
     },
     bfd: {
       total: {type: Number, default: 0},
       votes: {type: [Number], default: []},
+      sentReminder: {type: Boolean, default: false},
     },
     dbl: {
       total: {type: Number, default: 0},
       votes: {type: [Number], default: []},
+      sentReminder: {type: Boolean, default: false},
     },
     dboats: {
       total: {type: Number, default: 0},
       votes: {type: [Number], default: []},
+      sentReminder: {type: Boolean, default: false},
     },
     arcane: {
       total: {type: Number, default: 0},
       votes: {type: [Number], default: []},
+      sentReminder: {type: Boolean, default: false},
     },
     legacy: {
       total: {type: Number, default: 0},
       votes: {type: [Number], default: []},
+      sentReminder: {type: Boolean, default: false},
     },
     bod: {
       total: {type: Number, default: 0},
       votes: {type: [Number], default: []},
+      sentReminder: {type: Boolean, default: false},
     },
   },
 });
 
-dbUser.methods.addVote = function (list: BotLists, points = 1) {
+dbUser.methods.addVote = function (
+  list: BotLists,
+  points = 1,
+  resetReminder = true
+) {
   this.lists[list].votes.push(Date.now());
   this.lists[list].total += points;
   this.points += points;
+
+  if (resetReminder) {
+    this.lists[list].sentReminder = false;
+  }
 
   this.save();
 

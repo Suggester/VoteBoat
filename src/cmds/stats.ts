@@ -1,7 +1,7 @@
 import {Cmd} from './command';
-import {Client, Message, Collection} from 'discord.js';
+import {Client, Message} from 'discord.js';
 import {BotLists, UserDoc, ValueOf} from '@types';
-import {getUser} from '../util/util';
+import {getUser, listInfo} from '../util/util';
 import {Embed} from '../util/structures/embed';
 
 export default class extends Cmd {
@@ -24,25 +24,24 @@ export default class extends Cmd {
       }
     }
 
-    // const botId = client.user?.id;
-    const botId = global.config.bot_id;
+    // const botId = global.config.bot_id;
 
-    const listInfo: Collection<
-      BotLists,
-      {name: string; url: string}
-    > = new Collection([
-      // https://top.gg/bot/559426966151757824
-      ['topgg', {name: 'top.gg', url: `https://top.gg/bot/${botId}`}],
-      [
-        'botlistspace',
-        {name: 'botlist.space', url: `https://top.gg/bot/${botId}`},
-      ],
-      ['bfd', {name: 'Bots For Discord', url: `https://top.gg/bot/${botId}`}],
-      ['dbl', {name: 'Discord Bot List', url: `https://top.gg/bot/${botId}`}],
-      ['dboats', {name: 'DBoats', url: `https://top.gg/bot/${botId}`}],
-      ['arcane', {name: 'Arcane Center', url: `https://top.gg/bot/${botId}`}],
-      ['legacy', {name: 'Legacy', url: ''}],
-    ]);
+    // const listInfo: Collection<
+    //   BotLists,
+    //   {name: string; url: string}
+    // > = new Collection([
+    //   // https://top.gg/bot/559426966151757824
+    //   ['topgg', {name: 'top.gg', url: `https://top.gg/bot/${botId}`}],
+    //   [
+    //     'botlistspace',
+    //     {name: 'botlist.space', url: `https://top.gg/bot/${botId}`},
+    //   ],
+    //   ['bfd', {name: 'Bots For Discord', url: `https://top.gg/bot/${botId}`}],
+    //   ['dbl', {name: 'Discord Bot List', url: `https://top.gg/bot/${botId}`}],
+    //   ['dboats', {name: 'DBoats', url: `https://top.gg/bot/${botId}`}],
+    //   ['arcane', {name: 'Arcane Center', url: `https://top.gg/bot/${botId}`}],
+    //   ['legacy', {name: 'Legacy', url: ''}],
+    // ]);
 
     // ['bod', {name: 'bots on discord', url: `https://top.gg/bot/${botId}`}],
     const found: UserDoc = await user.db();

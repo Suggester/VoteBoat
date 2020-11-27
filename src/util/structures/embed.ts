@@ -5,6 +5,7 @@ import {
   MessageEmbed,
   MessageOptions,
   Snowflake,
+  UserResolvable,
 } from 'discord.js';
 import fetch from 'node-fetch';
 
@@ -49,5 +50,20 @@ export class Embed extends MessageEmbed {
         body: JSON.stringify({embeds: [this.toJSON()]}),
       }
     ).then(r => r.json());
+  }
+
+  async sendDM(
+    user: UserResolvable,
+    options: MessageOptions = {}
+  ): Promise<Message | Message[]> {
+    const u =
+      this.client.users.resolve(user) ||
+      (await this.client.users.fetch(user.valueOf()));
+
+    if (!u) {
+      throw new Error('This user does not exist.');
+    }
+
+    return u.send({...{embed: this}, ...options});
   }
 }
