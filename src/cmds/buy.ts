@@ -47,11 +47,13 @@ export default class extends Cmd {
         e.description += `> **Price**: ${item.price}`;
 
         if (item.prereq) {
-          e.description += `\n> **${
-            item.prereq.length === 1 ? 'Prerequisite' : 'Prerequisites'
-          }**: ${item.prereq
+          const prereqs = item.prereq
             .map(i => `\`${items.find(a => a.id === i)?.name}\``)
-            .join(', ')}`;
+            .join(', ');
+
+          e.description += `\n> **Prerequisite${
+            item.prereq.length === 1 ? '' : 's'
+          }**: ${prereqs}`;
         }
 
         e.description += '\n\n';
@@ -81,6 +83,14 @@ export default class extends Cmd {
       return;
     }
 
+    if (!this.meetsReqs(msg, items, item.id)) {
+      msg.channel.send(
+        `${x} You do not meet all of the prerequisites for **${item.name}**. For more info, refer to \`${global.config.prefix}${this.name}\``
+      );
+
+      return;
+    }
+
     if (msg.member?.roles.cache.has(item.role?.id || '')) {
       msg.channel.send(`${x} You have already purchased **${item.name}**`);
       return;
@@ -93,7 +103,7 @@ export default class extends Cmd {
       await msg.member?.roles.add(item.role?.id || '');
     }
 
-    msg.channel.send(`${check} Successfully purchased  **${item.name}**.`);
+    msg.channel.send(`${check} Successfully purchased **${item.name}**.`);
   }
 
   meetsReqs(
@@ -109,6 +119,10 @@ export default class extends Cmd {
         const found = items.find(
           e => e.id === i && e.type === 'role' && e.role?.id
         );
+
+        if (!found) {
+          return false;
+        }
 
         return msg.member?.roles.cache.has(found!.role!.id);
       });
