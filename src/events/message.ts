@@ -36,7 +36,10 @@ export default class MessageEvent {
     }
 
     if (!cmd.checkPerms(msg)) {
-      msg.channel.send(':x: You do not have permission to use that command.');
+      msg.channel.send(
+        `${global.config.emojis.x} You do not have permission to use that command.`
+      );
+
       return;
     }
 

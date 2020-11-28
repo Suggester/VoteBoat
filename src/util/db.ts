@@ -1,5 +1,5 @@
 import {model, Schema, connect, set as mongooseSet} from 'mongoose';
-import {UserDoc, BotLists} from '@types';
+import {UserDoc, BotList} from '@types';
 
 mongooseSet('useCreateIndex', true); // get rid of that annoying deprecation warning
 
@@ -52,7 +52,7 @@ const dbUser = new Schema({
 });
 
 dbUser.methods.addVote = function (
-  list: BotLists,
+  list: BotList,
   points = 1,
   resetReminder = true
 ) {

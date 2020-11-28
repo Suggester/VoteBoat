@@ -68,11 +68,11 @@ export interface Constructable<T> {
 export interface ListOptions {
   endpoint: string;
   name: string;
-  id: BotLists;
+  id: BotList;
   method?: 'get' | 'put' | 'post' | 'patch' | 'delete';
 }
 
-// export type BotLists =
+// export type BotList =
 //   | 'topgg'
 //   | 'botlistspace'
 //   | 'bfd'
@@ -92,6 +92,11 @@ export interface BotConfig {
   port: number;
   root: string;
 
+  emojis: {
+    x: string;
+    check: string;
+  };
+
   log_hook: {
     id: string;
     token: string;
@@ -103,7 +108,7 @@ export interface BotConfig {
   };
 
   bot_lists: {
-    [key in BotLists]: {
+    [key in BotList]: {
       name: string;
       key: string;
       points: number;
@@ -112,14 +117,21 @@ export interface BotConfig {
 
   shop: {
     items: {
-      type: 'role';
-      id: string;
+      type: 'role' | 'other';
+      id: number;
       name: string;
+      desc: string;
+      price: number;
+      prereq?: number[];
+
+      role?: {
+        id: string;
+      };
     }[];
   };
 }
 
-export type BotLists =
+export type BotList =
   | 'topgg'
   | 'botlistspace'
   | 'bfd'
@@ -137,17 +149,17 @@ export interface UserDoc extends Document {
   points: number;
   notify: boolean;
   lists: {
-    [key in BotLists]: {
+    [key in BotList]: {
       total: number;
       votes: number[];
       sentReminder: boolean;
     };
   };
-  addVote(list: BotLists, points: number): UserDoc;
+  addVote(list: BotList, points: number): UserDoc;
   lifetimeTotal(): number;
 }
 
 export interface UserDocInstance extends Document {
-  addVote(list: BotLists, points: number): UserDocInstance;
+  addVote(list: BotList, points: number): UserDocInstance;
   lifetimeTotal(): number;
 }

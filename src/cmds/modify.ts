@@ -1,7 +1,7 @@
 import {Cmd} from './command';
 import {Client, Message, Util} from 'discord.js';
 import {getUser} from '../util/util';
-import {UserDoc, BotLists} from '@types';
+import {UserDoc, BotList} from '@types';
 
 export default class extends Cmd {
   name = 'modify';
@@ -18,8 +18,10 @@ export default class extends Cmd {
   }
 
   async run(_client: Client, msg: Message): Promise<void> {
+    const {x, check} = global.config.emojis;
+
     if (!msg.args || msg.args.length < 3) {
-      msg.channel.send(':x: Incorrect number of arguments.');
+      msg.channel.send(`${x} Incorrect number of arguments.`);
       return;
     }
 
@@ -27,7 +29,7 @@ export default class extends Cmd {
     const user = await getUser(msg, arg0);
 
     if (!user) {
-      msg.channel.send(':x: I could not find that user.');
+      msg.channel.send(`${x} I could not find that user.`);
       return;
     }
 
@@ -36,21 +38,21 @@ export default class extends Cmd {
 
     if (![...lists, 'global'].includes(list.toLowerCase())) {
       msg.channel.send(
-        `:x: That list does not exist. Avalable lists: ${lists
+        `${x} That list does not exist. Avalable lists: ${lists
           .map(l => `\`${l}\``)
           .join(', ')}`
       );
       return;
     }
 
-    const botList: BotLists = list as BotLists;
+    const botList: BotList = list as BotList;
 
     const num = msg.args.shift()!;
     const operationRegex = /^(?<op>[+-=])(?<amt>\d+)$/g;
     const execd = operationRegex.exec(num);
 
     if (!execd || !execd.groups?.amt) {
-      msg.channel.send(':x: Incorrect syntax');
+      msg.channel.send(`${x} Incorrect syntax`);
       return;
     }
 
@@ -103,12 +105,12 @@ export default class extends Cmd {
     const saved = await db.save();
 
     if (!saved) {
-      msg.channel.send(':x: Unable to process change.');
+      msg.channel.send(`${x} Unable to process change.`);
       return;
     }
 
     msg.channel.send(
-      `:white_check_mark: Updated \`${Util.escapeMarkdown(
+      `${check} Updated \`${Util.escapeMarkdown(
         user.tag
       )}\`'s votes for list: \`${list}\`\n> Before: \`${
         list === 'global' ? dbCopy.points : dbCopy.lists[botList].total

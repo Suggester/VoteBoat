@@ -19,6 +19,7 @@ export default class extends Cmd {
   async run(_client: Client, msg: Message): Promise<void> {
     const db: UserDoc = await msg.author.db();
     const action = msg?.args?.shift()?.toLowerCase() || '';
+    const {x, check} = global.config.emojis;
 
     const yes = ['yes', 'on', 'true', 'enabled', 'enable'];
     const no = ['no', 'off', 'false', 'disabled', 'disable'];
@@ -27,7 +28,7 @@ export default class extends Cmd {
       db.notify = true;
       db.save().catch(console.error);
 
-      msg.channel.send(':white_check_mark: **Enabled** voting reminders.');
+      msg.channel.send(`${check} **Enabled** voting reminders.`);
 
       return;
     }
@@ -36,15 +37,15 @@ export default class extends Cmd {
       db.notify = false;
       db.save().catch(console.error);
 
-      msg.channel.send(':x: **Disabled** voting reminders.');
+      msg.channel.send(`${x} **Disabled** voting reminders.`);
 
       return;
     }
 
     msg.channel.send(
       db.notify
-        ? ':white_check_mark: Your notifications are currently **enabled**.'
-        : ':x: Your notifications are currently **disabled**.'
+        ? `${check} Your notifications are currently **enabled**.`
+        : `${x} Your notifications are currently **disabled**.`
     );
   }
 }

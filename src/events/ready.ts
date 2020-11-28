@@ -2,7 +2,7 @@ import {Client} from 'discord.js';
 import {initDb, User} from '../util/db';
 import {listInfo} from '../util/util';
 import {Embed} from '../util/structures/embed';
-import {UserDoc, BotLists, ValueOf} from '@types';
+import {UserDoc, BotList, ValueOf} from '@types';
 
 export default class {
   name = 'ready';
@@ -18,7 +18,7 @@ export default class {
     this.checkReminder(client);
   }
 
-  async sendReminder(client: Client, uid: string, list: BotLists) {
+  async sendReminder(client: Client, uid: string, list: BotList) {
     const l = listInfo.get(list);
 
     if (!l) {
@@ -60,9 +60,11 @@ export default class {
             continue;
           }
 
-          this.sendReminder(client, user.id, name as BotLists);
+          // ignoring the promise rejection cus itll reject if someone has dms off
+          // and theres no way to handle that and i dont wanna flood the console
+          this.sendReminder(client, user.id, name as BotList).catch(() => {});
 
-          user.lists[name as BotLists].sentReminder = true;
+          user.lists[name as BotList].sentReminder = true;
 
           user.save();
         }
@@ -72,9 +74,9 @@ export default class {
             continue;
           }
 
-          this.sendReminder(client, user.id, name as BotLists);
+          this.sendReminder(client, user.id, name as BotList).catch(() => {});
 
-          user.lists[name as BotLists].sentReminder = true;
+          user.lists[name as BotList].sentReminder = true;
 
           user.save();
         }

@@ -1,13 +1,13 @@
 import {Request, Response, Router} from 'express';
 import {Client, UserResolvable} from 'discord.js';
 import {Embed} from '../util/structures/embed';
-import {ListOptions, UserDoc, BotLists} from '@types';
+import {ListOptions, UserDoc, BotList} from '@types';
 import {User} from '../util/db';
 
 export abstract class List {
   endpoint: string;
   name: string;
-  id: BotLists;
+  id: BotList;
 
   constructor(ops: ListOptions, public client: Client, public router?: Router) {
     this.endpoint = ops.endpoint;

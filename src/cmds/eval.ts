@@ -35,7 +35,10 @@ export default class extends Cmd {
     const code = msg.args?.join(' ');
 
     if (!code) {
-      msg.channel.send(':x: You must provide code to execute.');
+      msg.channel.send(
+        `${global.config.emojis.x} You must provide code to execute.`
+      );
+
       return;
     }
 

@@ -10,8 +10,7 @@ new VoteBoatClient({
   },
 }).init();
 
-// TODO: timers
 // TODO: streaks
 // TODO: commands
-//   TODO: stats
 //   TODO: help
+// TODO: cache stuff to reduce database calls? specifically for reminders
