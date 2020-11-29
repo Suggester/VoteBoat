@@ -8,6 +8,11 @@ export default class extends Cmd {
   aliases = ['store', 'shop'];
   perms = 0;
 
+  help = {
+    desc: 'Spend your votes!',
+    usage: '[item-id]',
+  };
+
   constructor() {
     super();
   }
@@ -21,7 +26,7 @@ export default class extends Cmd {
     if (!selectedItem) {
       const e = new Embed(client)
         .setDescription(
-          `if an item is prefixed with ${x} u dont meet the reqs lol. loser :pepepointlaugh:\nif its prefixed with ${check} it means u hvae it (roles only)\n`
+          `if an item is prefixed with ${x} u dont meet the reqs lol.\nif its prefixed with ${check} it means u have it (roles only)\n`
         )
         .setFooter(`Balance: ${db.toObject().points}`)
         .setColor('#4187ec');

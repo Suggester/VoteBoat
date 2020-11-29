@@ -1,15 +1,27 @@
 import {Cmd} from './command';
 import {Client, Message} from 'discord.js';
-import {Embed} from '../util/structures/embed';
+import {Embed as E} from '../util/structures/embed';
 import {inspect} from 'util';
 
 // bring some useful stuff into scope
 // so they can be used with eval without require
-import {User} from '../util/db';
+import {User as U} from '../util/db';
+
+// this is cus tsc does weird stuff to imports
+const User = U;
+const Embed = E;
+
+// this is to get rid of eslint errors lol
+[User, Embed];
 
 export default class extends Cmd {
   name = 'eval';
   perms = 10;
+
+  help = {
+    desc: 'Execute JavaScript code in context',
+    usage: '<code>',
+  };
 
   constructor() {
     super();
@@ -29,8 +41,6 @@ export default class extends Cmd {
 
   async run(_client: Client, msg: Message): Promise<void> {
     // const {User} = await import('../util/db');
-
-    [User, Embed]; // this is to get rid of eslint errors lol
 
     const code = msg.args?.join(' ');
 

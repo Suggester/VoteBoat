@@ -1,6 +1,6 @@
 import {Cmd} from './command';
 import {Client, Message, Util} from 'discord.js';
-import {getUser} from '../util/util';
+import {getUser, listInfo} from '../util/util';
 import {UserDoc, BotList} from '@types';
 
 export default class extends Cmd {
@@ -9,7 +9,15 @@ export default class extends Cmd {
   perms = 5;
 
   help = {
-    desc: "Modify a user's stats",
+    desc: `Modify a user's stats
+
+lists = ${['global', ...listInfo.keyArray()].map(l => `'${l}'`).join(', ')}
+
+\`<amount>\` must be prefixed with an operator:
+
++10: Add 10 to the user's balance
+-10: Subtract 10 from the user's balance
+=10: Set the user's balance to 10`,
     usage: '<user> <list> <amount>',
   };
 

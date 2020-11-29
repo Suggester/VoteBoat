@@ -10,7 +10,9 @@ new VoteBoatClient({
   },
 }).init();
 
-// TODO: streaks
+// TODO: voting streaks
+// TODO: write actual sentences (buy.ts)
+// TODO: add all bot lists with correct POST body
 // TODO: commands
-//   TODO: help
+//   TODO: checkreview -- botsondiscord
 // TODO: cache stuff to reduce database calls? specifically for reminders
