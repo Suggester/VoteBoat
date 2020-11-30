@@ -1,5 +1,5 @@
 import {model, Schema, connect, set as mongooseSet} from 'mongoose';
-import {UserDoc, BotList} from '@types';
+import {UserDoc, BotList, ValueOf} from '@types';
 
 mongooseSet('useCreateIndex', true); // get rid of that annoying deprecation warning
 

@@ -11,9 +11,6 @@ import {User as U} from '../util/db';
 const User = U;
 const Embed = E;
 
-// this is to get rid of eslint errors lol
-[User, Embed];
-
 export default class extends Cmd {
   name = 'eval';
   perms = 10;
@@ -39,8 +36,9 @@ export default class extends Cmd {
       .send(msg.channel.id);
   }
 
-  async run(_client: Client, msg: Message): Promise<void> {
-    // const {User} = await import('../util/db');
+  async run(client: Client, msg: Message): Promise<void> {
+    // this is to get rid of eslint errors lol
+    [User, Embed, client];
 
     const code = msg.args?.join(' ');
 

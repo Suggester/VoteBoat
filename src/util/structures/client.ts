@@ -20,12 +20,12 @@ export class VoteBoatClient extends Client {
     super(ops);
   }
 
-  async init(): Promise<string> {
+  async init(): Promise<void> {
     await this.loadEvents().catch(console.error);
     await this.loadCmds().catch(console.error);
     await startServer(this);
 
-    return await super.login(this.ops.token);
+    await super.login(this.ops.token);
   }
 
   private async loadEvents(): Promise<void> {

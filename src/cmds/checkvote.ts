@@ -4,6 +4,7 @@ import fetch from 'node-fetch';
 
 export default class extends Cmd {
   name = 'checkvote';
+  aliases = ['checkreview'];
 
   constructor() {
     super();
@@ -19,8 +20,13 @@ export default class extends Cmd {
     }
 
     const res = await fetch(
-      `https://bots.ondiscord.xyz/bot-api/bots/${global.config.bot_id}/review?owner=${msg.author.id}`
-    );
+      `https://bots.ondiscord.xyz/bot-api/bots/${global.config.bot_id}/review?owner=${msg.author.id}`,
+      {
+        headers: {
+          Authorization: global.config.bot_lists.bod.key,
+        },
+      }
+    ).catch(console.error);
 
     if (!res) {
       msg.channel.send(`${x} An error occurred. Please try again.`);
@@ -28,12 +34,17 @@ export default class extends Cmd {
     }
 
     const json: {exists: boolean} = await res.json();
+    console.log(json);
 
     if (!json.exists) {
       msg.channel.send(
-        `${x} You have not written a review for Suggester on the [Bots on Discord](...) page. Write a review and run the command again for your vote to count!`
+        `${x} You have not written a review for Suggester on the Bots on Discord page. Write a review and run the command again for your vote to count!`
       );
       return;
     }
+
+    db.addVote('bod', global.config.bot_lists.bod.points);
+
+    msg.channel.send(`${check} Your review has been counted!`);
   }
 }

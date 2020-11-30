@@ -28,31 +28,40 @@ const content = readFileSync(path, 'utf8');
 const parsed = safeLoad(content);
 
 if (!parsed) {
-  process.exit(1); // eslint-disable-line no-process-exit
+  throw new Error('Unable to parse config');
 }
 
 global.config = parsed as BotConfig;
 
-export function configCheck(exit = true) {
-  const requiredParams: string[] = [
-    'TOKEN',
-    'PORT',
-    'PREFIX',
-    'LOG_HOOK_ID',
-    'LOG_HOOK_TOKEN',
-    'TOPGG_KEY',
-    'BOTLISTSPACE_KEY',
+const missing = configCheck();
+
+if (missing.length) {
+  throw new Error(`Missing config elements: ${missing.join(', ')}`);
+}
+
+export function configCheck() {
+  const requiredParams = [
+    'token',
+    'bot_id',
+    'mongo_db_uri',
+    'whitelisted_guilds',
+    'admins',
+    'staff_roles',
+    'prefix',
+    'port',
+    'root',
+    'emojis',
+    'log_hook',
+    'bot_lists',
+    'shop',
   ];
+
   const missing: string[] = [];
 
   for (const prop of requiredParams) {
     if (!(prop in global.config)) {
       missing.push(prop);
     }
-  }
-
-  if (exit && missing.length > 0) {
-    process.exit(1); // eslint-disable-line no-process-exit
   }
 
   return missing;

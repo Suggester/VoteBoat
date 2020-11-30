@@ -5,14 +5,10 @@ import {VoteBoatClient} from '@client';
 new VoteBoatClient({
   token: global.config.token,
   dirs: {
-    events: global.config.dirs.events,
-    cmds: global.config.dirs.cmds,
+    events: 'build/src/events',
+    cmds: 'build/src/cmds',
   },
 }).init();
 
 // TODO: voting streaks
-// TODO: write actual sentences (buy.ts)
-// TODO: add all bot lists with correct POST body
-// TODO: commands
-//   TODO: checkreview -- botsondiscord
-// TODO: cache stuff to reduce database calls? specifically for reminders
+// TODO: overload sendEmbed in topgg to show weekend votes?

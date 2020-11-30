@@ -1,5 +1,5 @@
 import {Request, Response, Router} from 'express';
-import {Client, UserResolvable} from 'discord.js';
+import {Client, UserResolvable, MessageEmbed} from 'discord.js';
 import {Embed} from '../util/structures/embed';
 import {ListOptions, UserDoc, BotList} from '@types';
 import {User} from '../util/db';
@@ -32,6 +32,10 @@ export abstract class List {
   }
 
   async sendEmbed(user: UserResolvable): Promise<void> {
+    if (!user) {
+      return;
+    }
+
     const u =
       this.client.users.cache.get(user.valueOf()) ||
       (await this.client.users.fetch(user.valueOf()));
@@ -46,6 +50,10 @@ export abstract class List {
   }
 
   async saveVote(id: string, amt = 1) {
+    if (!id) {
+      return;
+    }
+
     // add vote to user db
     console.log('Adding', amt, 'to user', id, 'for list', this.id);
 

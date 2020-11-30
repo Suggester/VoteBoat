@@ -21,12 +21,25 @@ export default class extends Cmd {
     const items: BotConfig['shop']['items'] = global.config.shop.items;
     const selectedItem = msg.args?.shift();
     const db = await msg.author.db();
-    const {x, check} = global.config.emojis;
+    const {
+      prefix,
+      emojis: {x, check},
+    } = global.config;
 
     if (!selectedItem) {
       const e = new Embed(client)
         .setDescription(
-          `if an item is prefixed with ${x} u dont meet the reqs lol.\nif its prefixed with ${check} it means u have it (roles only)\n`
+          'With your votes, you can buy various items like roles and acknowledgments!\n\n**Available Rewards** \n'
+        )
+        .addField(
+          'Buying Rewards',
+          `To purchase a reward, use the ${prefix}${this.name} command, followed by the number of the item you would like to buy.\n` +
+            `> Example: Buying **${items.find(i => i.id === 1)?.name}**:\n` +
+            `> \`${prefix}${this.name} 1\``
+        )
+        .addField(
+          'Additional Info',
+          `If an item is prefixed with ${x}, it means you do not meet the prerequisites to purchase that item. Items prefixed with ${check} are already owned.`
         )
         .setFooter(`Balance: ${db.toObject().points}`)
         .setColor('#4187ec');
@@ -36,7 +49,7 @@ export default class extends Cmd {
         let hasRole = false;
 
         if (item.type === 'role') {
-          hasRole = !!msg.member?.roles.cache.has(item.role?.id || '');
+          hasRole = !!msg.member?.roles.cache.has(item.role_id || '');
         }
 
         if (!meetsReqs) {
@@ -96,7 +109,7 @@ export default class extends Cmd {
       return;
     }
 
-    if (msg.member?.roles.cache.has(item.role?.id || '')) {
+    if (msg.member?.roles.cache.has(item?.role_id || '')) {
       msg.channel.send(`${x} You have already purchased **${item.name}**`);
       return;
     }
@@ -105,7 +118,7 @@ export default class extends Cmd {
     await db.save();
 
     if (item.type === 'role') {
-      await msg.member?.roles.add(item.role?.id || '');
+      await msg.member?.roles.add(item?.role_id || '');
     }
 
     msg.channel.send(`${check} Successfully purchased **${item.name}**.`);
@@ -122,14 +135,14 @@ export default class extends Cmd {
     if (item?.prereq) {
       meetsReqs = item?.prereq?.every(i => {
         const found = items.find(
-          e => e.id === i && e.type === 'role' && e.role?.id
+          e => e.id === i && e.type === 'role' && e.role_id
         );
 
         if (!found) {
           return false;
         }
 
-        return msg.member?.roles.cache.has(found!.role!.id);
+        return msg.member?.roles.cache.has(found.role_id!);
       });
     }
 

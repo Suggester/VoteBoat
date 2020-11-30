@@ -4,30 +4,35 @@ import {List} from './list';
 
 export default class extends List {
   constructor(public client: Client, router: Router) {
-    super({endpoint: '/topgg', name: 'Top.gg', id: 'topgg'}, client, router);
+    super(
+      {endpoint: '/bfd', name: 'Bots for Discord', id: 'bfd'},
+      client,
+      router
+    );
   }
 
   handleRequest(req: Request, res: Response) {
-    if (!super.checkOrigin(global.config.bot_lists.topgg.key, req, res)) {
+    if (!super.checkOrigin(global.config.bot_lists.bfd.key, req, res)) {
       return;
     }
 
     super.sendEmbed(req.body.user);
-
-    const amt = req.body.isWeekend ? 2 : 1;
-
-    super.saveVote(req.body.user, amt);
+    super.saveVote(req.body.user);
   }
 }
 
 /*
 example webhook body:
-
 {
-  bot: 'bot id',
   user: 'user id',
-  type: 'upvote',
-  isWeekend: false,
-  query: ''
+  bot: 'bot id',
+  type: 'vote',
+  votes: {
+    totalVotes: 1,
+    votes24: 1,
+    votesMonth: 1,
+    hasVoted: [123, 456],
+    hasVoted24: [789, 012]
+  }
 }
 */

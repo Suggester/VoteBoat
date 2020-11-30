@@ -26,7 +26,7 @@ declare module 'discord.js' {
      * - Load events
      * - Login
      */
-    init(): Promise<string>;
+    init(): Promise<void>;
   }
 
   export interface Message {
@@ -72,15 +72,6 @@ export interface ListOptions {
   method?: 'get' | 'put' | 'post' | 'patch' | 'delete';
 }
 
-// export type BotList =
-//   | 'topgg'
-//   | 'botlistspace'
-//   | 'bfd'
-//   | 'dbl'
-//   | 'dboats'
-//   | 'arcane'
-//   | 'bod';
-
 export interface BotConfig {
   token: string;
   bot_id: string;
@@ -112,6 +103,7 @@ export interface BotConfig {
       name: string;
       key: string;
       points: number;
+      votes_per_day: 1 | 2;
     };
   };
 
@@ -124,6 +116,9 @@ export interface BotConfig {
       price: number;
       prereq?: number[];
 
+      role_id?: string;
+
+      /** @deprecated */
       role?: {
         id: string;
       };

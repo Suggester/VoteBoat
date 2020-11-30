@@ -1,0 +1,70 @@
+# bot token
+token: ''
+# id of the bot to track votes for
+bot_id: ''
+# mongodb connection url
+mongo_db_uri: ''
+
+# prefix for the bot to respond to
+prefix: 'v!'
+
+# the bot will only listen for commands in these guilds
+whitelisted_guilds:
+  - ''
+
+# roles that can use level 5 commands
+staff_roles:
+  - ''
+
+# users who can use all commands
+admins:
+  - ''
+
+# webhook to post votes to
+log_hook:
+  id: ''
+  token: ''
+
+# emojis to prefix success and error messages with
+# leave blank for none
+emojis:
+  x: ':x:'
+  check: ':white_check_mark:'
+
+# port to run the webserver on
+port: 1234
+# webserver path prefix
+# leave / for root
+root: '/votes'
+
+# bot list info
+bot_lists:
+  topgg:
+    name: 'Top.gg'
+    key: ''
+    points: 1
+
+# stuff you can spend votes on
+shop:
+  items:
+    - type: 'role'
+      # this id number will be used to purchase items
+      # as well as in the prereq field of other items
+      id: 1
+      # name to show up in
+      name: ''
+      # item description
+      desc: ''
+      # amount of votes it costs to buy the item
+      price: 50
+      # if the item is a role, you must set the role id
+      role_id: ''
+
+    - type: 'other'
+      id: 2
+      desc: ''
+      name: ''
+      price: 100
+      # you must have item 1.
+      # note: this only works if the item is a role.
+      prereq: [1]
