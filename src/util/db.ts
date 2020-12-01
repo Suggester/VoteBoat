@@ -51,43 +51,43 @@ const dbUser = new Schema({
   },
 });
 
-dbUser.methods.addVote = function (
-  list: BotList,
-  points = 1,
-  resetReminder = true
-) {
-  this.lists[list].votes.push(Date.now());
-  this.lists[list].total += points;
-  this.points += points;
+dbUser.method({
+  lifetimeTotal() {
+    const lists: UserDoc['lists'] = this.lists;
+    const vals = Object.values(lists);
+    const total = vals
+      .filter(e => typeof e === 'object')
+      .reduce((t, c) => t + c.total, 0);
 
-  if (resetReminder) {
-    this.lists[list].sentReminder = false;
-  }
+    return total;
+  },
 
-  this.save();
+  addVote(list: BotList, points = 1, resetReminder = true) {
+    this.lists[list].votes.push(Date.now());
+    this.lists[list].total += points;
+    this.points += points;
 
-  return this;
-};
+    if (resetReminder) {
+      this.lists[list].sentReminder = false;
+    }
 
-dbUser.methods.lifetimeTotal = function (): number {
-  const lists: UserDoc['lists'] = this.lists;
-  const vals = Object.values(lists);
-  const total = vals
-    .filter(e => typeof e === 'object')
-    .reduce((t, c) => t + c.total, 0);
+    this.save();
 
-  return total;
-};
+    return this;
+  },
+});
 
-dbUser.statics.getOrCreate = async function (id: string) {
-  const found = await User.findOne({id});
+dbUser.static({
+  async getOrCreate(id: string) {
+    const found = await User.findOne({id});
 
-  if (found) {
-    return found;
-  }
+    if (found) {
+      return found;
+    }
 
-  return new User({id}).save();
-};
+    return new User({id}).save();
+  },
+});
 
 export const User = model('user', dbUser);
 

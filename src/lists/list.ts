@@ -46,6 +46,7 @@ export abstract class List {
 
     return new Embed(this.client)
       .setDescription(`${tag} just voted for Suggester on ${this.name}!`)
+      .setColor('#4663ec')
       .sendWebhook(id, token);
   }
 
